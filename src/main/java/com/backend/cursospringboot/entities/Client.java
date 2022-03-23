@@ -23,6 +23,9 @@ public class Client implements Serializable {
     private String cpf;
     private Integer typeClient;
 
+
+    private List<Order> orders = new ArrayList<>();
+
     @JsonManagedReference
     @OneToMany(mappedBy = "client")
     private List<Address> address = new ArrayList<>();
@@ -95,6 +98,14 @@ public class Client implements Serializable {
 
     public void setCellphone(Set<String> cellphone) {
         this.cellphone = cellphone;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     @Override
