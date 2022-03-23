@@ -23,7 +23,7 @@ public class Client implements Serializable {
     private String cpf;
     private Integer typeClient;
 
-
+    @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
 
     @JsonManagedReference

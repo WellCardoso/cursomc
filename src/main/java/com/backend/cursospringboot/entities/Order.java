@@ -1,23 +1,35 @@
 package com.backend.cursospringboot.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+@Entity
+@Table(name="tb_order")
 public class Order implements Serializable {
     public static final Long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Date instante;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "order")
     private Payment payment;
-    private Client client;
+
+    @ManyToOne
+    @JoinColumn(name="tb_address_id")
     private Address address;
+
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client client;
 
     public Order() {}
 
-    public Order(Long id, Date instante, Payment payment, Client client, Address address) {
+    public Order(Long id, Date instante, Client client, Address address) {
         this.id = id;
         this.instante = instante;
-        this.payment = payment;
         this.client = client;
         this.address = address;
     }

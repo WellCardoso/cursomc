@@ -2,8 +2,12 @@ package com.backend.cursospringboot.entities;
 
 import com.backend.cursospringboot.enums.StatusPayment;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Date;
 
+@Entity
+@Table(name="tb_ticket_payment")
 public class TicketPayment extends Payment {
     public static final Long serialVersionUID = 1L;
     private Date vencimento;

@@ -1,12 +1,14 @@
 package com.backend.cursospringboot.config;
 
 import com.backend.cursospringboot.entities.*;
+import com.backend.cursospringboot.enums.StatusPayment;
 import com.backend.cursospringboot.enums.TypeClient;
 import com.backend.cursospringboot.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 @Configuration
@@ -29,6 +31,12 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     public ClientRepository clientRepository;
+
+    @Autowired
+    public OrderRepository orderRepository;
+
+    @Autowired
+    public PaymentRepository paymentRepository;
 
 
     @Override
@@ -98,5 +106,32 @@ public class TestConfig implements CommandLineRunner {
 
         clientRepository.save(clin1);
         addressRepository.saveAll(Arrays.asList(address1, address2));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+        Order order1 = new Order(null, sdf.parse("30/09/2017 10:32"), clin1, address1);
+        Order order2 = new Order(null, sdf.parse("10/10/2017 19:35"), clin1, address2);
+
+        Payment payment1 = new CartaoPayment(
+                null,
+                StatusPayment.QUITADO,
+                order1,
+                6
+        );
+        order1.setPayment(payment1);
+
+        Payment payment2 = new TicketPayment(
+                null,
+                StatusPayment.PENDENTE,
+                order2,
+                sdf.parse("20/10/2017 00:00"),
+                null
+        );
+        order2.setPayment(payment2);
+
+        clin1.getOrders().addAll(Arrays.asList(order1, order2));
+
+        orderRepository.saveAll(Arrays.asList(order1, order2));
+        paymentRepository.saveAll(Arrays.asList(payment1, payment2));
     }
 }

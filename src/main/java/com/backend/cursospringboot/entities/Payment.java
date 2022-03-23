@@ -2,20 +2,29 @@ package com.backend.cursospringboot.entities;
 
 import com.backend.cursospringboot.enums.StatusPayment;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
-public class Payment implements Serializable {
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name="tb_payment")
+public abstract class Payment implements Serializable {
     public static final Long serialVersionUID = 1L;
+    @Id
     private Long id;
-    private StatusPayment status;
 
+    private Integer status;
+
+    @OneToOne
+    @JoinColumn(name="order_id")
+    @MapsId
     private Order order;
 
     public Payment(){}
 
     public Payment(Long id, StatusPayment status, Order order) {
         this.id = id;
-        this.status = status;
+        this.status = status.getCod();
         this.order = order;
     }
 
@@ -27,12 +36,12 @@ public class Payment implements Serializable {
         this.id = id;
     }
 
-    public StatusPayment getStatus() {
-        return status;
+    public StatusPayment getStatus() throws IllegalAccessException {
+        return StatusPayment.toEnum(status);
     }
 
     public void setStatus(StatusPayment status) {
-        this.status = status;
+        this.status = status.getCod();
     }
 
     public Order getOrder() {
