@@ -1,6 +1,7 @@
 package com.backend.cursospringboot.entities;
 
 import com.backend.cursospringboot.enums.TypeClient;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,6 +23,7 @@ public class Client implements Serializable {
     private String cpf;
     private Integer typeClient;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "client")
     private List<Address> address = new ArrayList<>();
 
